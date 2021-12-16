@@ -108,7 +108,7 @@ async function getBalance() {
 
 <section className="text-gray-600 body-font">
   <div className="container py-24 mx-auto">
-    <div className="text-black text-3xl font-semibold mb-2">DASHBOARD</div>
+    <div className="text-black text-3xl font-semibold mb-2">DASHBRRRD</div>
     <div className="flex flex-wrap flex-col -m-4">
       <div className="sm:w-full p-4">
         <div className="border border-gray-200 bg-black p-6 rounded-lg">
