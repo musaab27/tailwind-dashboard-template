@@ -35,10 +35,10 @@ function RealtimeChart({
             grid: {
               drawBorder: false,
             },
-            suggestedMin: 30,
-            suggestedMax: 80,
+            suggestedMin: 1.25,
+            suggestedMax: 1.35,
             ticks: {
-              maxTicksLimit: 5,
+              maxTicksLimit: 20,
               callback: (value) => formatValue(value),
             },
           },

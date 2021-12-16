@@ -6,25 +6,30 @@ import RealtimeChart from '../../charts/RealtimeChart';
 import { tailwindConfig, hexToRGB } from '../../utils/Utils';
 
 function DashboardCard05() {
+  const [volume, setVolume] = useState("");
+  // const [price, setPrice] = useState("");
+  // const [percentChange, setPercentChange] = useState("");
+  // const [averageprice, setAverageprice] = useState("");
 
-  // IMPORTANT:
-  // Code below is for demo purpose only, and it's not covered by support.
-  // If you need to replace dummy data with real data,
-  // refer to Chart.js documentation: https://www.chartjs.org/docs/latest
+  async function getCoinPrice (){
+    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=fantom&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true`);
+      const data = await response.json();
+      console.log(data);
+      setVolume(data.fantom.usd_24h_vol);
+      // setPrice(data.fantom.usd);
+      // setPercentChange(data.fantom.usd_24h_change);
+    
+    }
 
-  // Fake real-time data
+
+
   const [counter, setCounter] = useState(0);
   const [increment, setIncrement] = useState(0);
   const [range, setRange] = useState(35);
   
   // Dummy data to be looped
   const data = [
-    57.81, 57.75, 55.48, 54.28, 53.14, 52.25, 51.04, 52.49, 55.49, 56.87,
-    53.73, 56.42, 58.06, 55.62, 58.16, 55.22, 58.67, 60.18, 61.31, 63.25,
-    65.91, 64.44, 65.97, 62.27, 60.96, 59.34, 55.07, 59.85, 53.79, 51.92,
-    50.95, 49.65, 48.09, 49.81, 47.85, 49.52, 50.21, 52.22, 54.42, 53.42,
-    50.91, 58.52, 53.37, 57.58, 59.09, 59.36, 58.71, 59.42, 55.93, 57.71,
-    50.62, 56.28, 57.37, 53.08, 55.94, 55.82, 53.94, 52.65, 50.25,
+   1.32, 1.31, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.31, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.31, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.33, 1.33, 1.33, 1.32, 1.32, 1.32, 1.33, 1.33, 1.33, 1.33, 1.33, 1.33, 1.32, 1.33, 1.34, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.33, 1.33, 1.33, 1.32, 1.32, 1.32, 1.33, 1.33, 1.33, 1.33, 1.33, 1.33, 1.32, 1.33, 1.34, 1.33, 1.34, 1.33, 1.34, 1.33, 1.34, 1.33 
   ];
 
   const [slicedData, setSlicedData] = useState(data.slice(0, range));
@@ -43,9 +48,10 @@ function DashboardCard05() {
 
   // Fake update every 2 seconds
   useEffect(() => {
+    getCoinPrice();
     const interval = setInterval(() => {
       setCounter(counter + 1);
-    }, 2000);
+    }, 100000);
     return () => clearInterval(interval)
   }, [counter]);
 
@@ -61,6 +67,8 @@ function DashboardCard05() {
     setSlicedLabels(([x, ...slicedLabels]) => [...slicedLabels, new Date()]);
     return () => setIncrement(0)
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //
+
   }, [counter]);
 
   const chartData = {
@@ -84,14 +92,19 @@ function DashboardCard05() {
 
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 bg-white shadow-lg rounded-sm border border-gray-200">
+                     <h2 className="px-5 py-4 font-semibold text-gray-800">FTM Placeholder</h2>
       <header className="px-5 py-4 border-b border-gray-100 flex items-center">
-        <h2 className="font-semibold text-gray-800">Real Time Value</h2>
+      <div className="font-semibold text-gray-800">Volume: {parseFloat(volume).toLocaleString('en')}</div>
+
+
+
         <Info className="ml-2" containerClassName="min-w-44">
           <div className="text-sm text-center">Built with <a className="underline" href="https://www.chartjs.org/" target="_blank" rel="noreferrer">Chart.js</a></div>
         </Info>
       </header>
       {/* Chart built with Chart.js 3 */}
       {/* Change the height attribute to adjust the chart height */}
+
       <RealtimeChart data={chartData} width={595} height={248} />
     </div>
   );

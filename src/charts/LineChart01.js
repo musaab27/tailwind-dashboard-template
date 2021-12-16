@@ -35,6 +35,7 @@ function LineChart01({
           y: {
             display: false,
             beginAtZero: true,
+            
           },
           x: {
             type: 'time',

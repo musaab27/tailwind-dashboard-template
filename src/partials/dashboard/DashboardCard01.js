@@ -1,35 +1,43 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
 import LineChart from '../../charts/LineChart01';
 import Icon from '../../images/icon-01.svg';
-import EditMenu from '../EditMenu';
 
 // Import utilities
 import { tailwindConfig, hexToRGB } from '../../utils/Utils';
 
 function DashboardCard01() {
+  const [volume, setVolume] = useState("");
+  const [price, setPrice] = useState("");
+  const [percentChange, setPercentChange] = useState("");
+  const [averageprice, setAverageprice] = useState("");
+  const [date, setDate] = useState("");
+  
+  // async function getAveragePrice (){
+  //   const response = await fetch(`https://api.coingecko.com/api/v3/coins/fantom/market_chart/range?vs_currency=usd&from=1639364827&to=1639451227`);
+  //     const data = await response.json();
+
+  //     const priceMap = data.prices.map(price => price[1]);
+  //     setAverageprice(priceMap);
+  //   console.log(priceMap);
+  //   const DateMap = data.prices.map(item => new Date(item[0]).toLocaleDateString("en-US"));
+  //   setDate(DateMap);
+  //   console.log(DateMap);
+
+    
+  //   }
+
 
   const chartData = {
-    labels: [
-      '12-01-2020', '01-01-2021', '02-01-2021',
-      '03-01-2021', '04-01-2021', '05-01-2021',
-      '06-01-2021', '07-01-2021', '08-01-2021',
-      '09-01-2021', '10-01-2021', '11-01-2021',
-      '12-01-2021', '01-01-2022', '02-01-2022',
-      '03-01-2022', '04-01-2022', '05-01-2022',
-      '06-01-2022', '07-01-2022', '08-01-2022',
-      '09-01-2022', '10-01-2022', '11-01-2022',
-      '12-01-2022', '01-01-2023',
+    labels: [  
+    "1-22-2020", "1-23-2020", "1-24-2020"
     ],
     datasets: [
       // Indigo line
       {
-        data: [
-          732, 610, 610, 504, 504, 504, 349,
-          349, 504, 342, 504, 610, 391, 192,
-          154, 273, 191, 191, 126, 263, 349,
-          252, 423, 622, 470, 532,
-        ],
+        data: 
+          [],
+         averageprice
+        ,
         fill: true,
         backgroundColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.blue[500])}, 0.08)`,
         borderColor: tailwindConfig().theme.colors.indigo[500],
@@ -43,10 +51,7 @@ function DashboardCard01() {
       // Gray line
       {
         data: [
-          532, 532, 532, 404, 404, 314, 314,
-          314, 314, 314, 234, 314, 234, 234,
-          314, 314, 314, 388, 314, 202, 202,
-          202, 202, 314, 720, 642,
+
         ],
         borderColor: tailwindConfig().theme.colors.gray[300],
         borderWidth: 2,
@@ -59,6 +64,24 @@ function DashboardCard01() {
     ],
   };
 
+  async function getCoinPrice (){
+  const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=fantom&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true`);
+    const data = await response.json();
+    console.log(data);
+    setVolume(data.fantom.usd_24h_vol);
+    setPrice(data.fantom.usd);
+    setPercentChange(data.fantom.usd_24h_change);
+
+
+  
+  }
+
+
+  useEffect(() => {
+    getCoinPrice();
+
+  }, [])
+
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-gray-200">
       <div className="px-5 pt-5">
@@ -66,23 +89,12 @@ function DashboardCard01() {
           {/* Icon */}
           <img src={Icon} width="32" height="32" alt="Icon 01" />
           {/* Menu button */}
-          <EditMenu className="relative inline-flex">
-            <li>
-              <Link className="font-medium text-sm text-gray-600 hover:text-gray-800 flex py-1 px-3" to="#0">Option 1</Link>
-            </li>
-            <li>
-              <Link className="font-medium text-sm text-gray-600 hover:text-gray-800 flex py-1 px-3" to="#0">Option 2</Link>
-            </li>
-            <li>
-              <Link className="font-medium text-sm text-red-500 hover:text-red-600 flex py-1 px-3" to="#0">Remove</Link>
-            </li>
-          </EditMenu>
         </header>
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">Acme Plus</h2>
-        <div className="text-xs font-semibold text-gray-400 uppercase mb-1">Sales</div>
+        <h2 className="text-lg font-semibold text-gray-800 mb-2">BRRR </h2>
+        <div className="text-xs font-semibold text-gray-400 uppercase mb-1">{parseFloat(volume).toLocaleString('en')}</div>
         <div className="flex items-start">
-          <div className="text-3xl font-bold text-gray-800 mr-2">$24,780</div>
-          <div className="text-sm font-semibold text-white px-1.5 bg-green-500 rounded-full">+49%</div>
+          <div className="text-3xl font-bold text-gray-800 mr-2">${price}</div>
+          <div className="text-sm font-semibold text-white px-1.5 bg-gray-400 rounded-full">{Math.round(percentChange).toFixed(4)} %</div>
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}
