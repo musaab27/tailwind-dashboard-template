@@ -19,7 +19,7 @@ function WelcomeBanner() {
 const Web3 = require("web3");
 
 const provider =
-  "http://rpc.fantom.network/"
+  "https://rpc.fantom.network/"
 
 const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
 
