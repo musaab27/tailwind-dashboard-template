@@ -7,7 +7,7 @@ import { tailwindConfig, hexToRGB } from '../../utils/Utils';
 
 function DashboardCard05() {
   const [volume, setVolume] = useState("");
-  // const [price, setPrice] = useState("");
+  const [price, setPrice] = useState("");
   // const [percentChange, setPercentChange] = useState("");
   // const [averageprice, setAverageprice] = useState("");
 
@@ -16,7 +16,7 @@ function DashboardCard05() {
       const data = await response.json();
       console.log(data);
       setVolume(data.fantom.usd_24h_vol);
-      // setPrice(data.fantom.usd);
+      setPrice(data.fantom.usd);
       // setPercentChange(data.fantom.usd_24h_change);
     
     }
@@ -28,8 +28,7 @@ function DashboardCard05() {
   const [range, setRange] = useState(35);
   
   // Dummy data to be looped
-  const data = [
-   1.32, 1.31, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.31, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.31, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.33, 1.33, 1.33, 1.32, 1.32, 1.32, 1.33, 1.33, 1.33, 1.33, 1.33, 1.33, 1.32, 1.33, 1.34, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.32, 1.33, 1.33, 1.33, 1.32, 1.32, 1.32, 1.33, 1.33, 1.33, 1.33, 1.33, 1.33, 1.32, 1.33, 1.34, 1.33, 1.34, 1.33, 1.34, 1.33, 1.34, 1.33 
+  const data = [price + .01, price, price + .01, price, price + .01, price, price + .01, price +.01, price, price +.01, price, price +.01, price
   ];
 
   const [slicedData, setSlicedData] = useState(data.slice(0, range));
@@ -53,7 +52,7 @@ function DashboardCard05() {
       setCounter(counter + 1);
     }, 100000);
     return () => clearInterval(interval)
-  }, [counter]);
+  }, [counter, setPrice]);
 
   // Loop through data array and update
   useEffect(() => {
