@@ -14,6 +14,7 @@ function WelcomeBanner() {
   const [balance, setBalance] = useState("");
   const [mimBalance, setMimBalance] = useState("");
   const [USDCBalance, setUSDCBalance] = useState("");
+  const [reRender, setRerender] = useState(false);
  
 
 
@@ -62,6 +63,11 @@ async function getBalance() {
   const format3 = Web3Client.utils.fromWei(USDCResult, 'mwei');
   setUSDCBalance(format3);
 
+  const response = await fetch (`https://api.ftmscan.com/api?module=account&action=balance&address=${walletAddress}&tag=latest&apikey=HKZ6TUY2KFAJQ43XPJN7E1N8X1HTBV3XX4`);
+const data = await response.json();
+const format = Web3Client.utils.fromWei(data.result);
+setBalance(format);
+
 
   // const response = await fetch(`https://api.ftmscan.com/api?module=account&action=tokentx&contractaddress=0x04068da6c83afcfa0e13ba15a6696662335d5b75&startblock=25052210&address=${walletAddress}&page=1&offset=100&sort=asc&apikey=HKZ6TUY2KFAJQ43XPJN7E1N8X1HTBV3XX4`);
   // //will need CA of the Token, and the address of the wallet
@@ -73,10 +79,6 @@ async function getBalance() {
   //     sum += parseInt(data.result[i].value)/1000000;
   //   }
   //   setAccounts(sum);
-const response = await fetch (`https://api.ftmscan.com/api?module=account&action=balance&address=${walletAddress}&tag=latest&apikey=HKZ6TUY2KFAJQ43XPJN7E1N8X1HTBV3XX4`);
-const data = await response.json();
-const format = Web3Client.utils.fromWei(data.result);
-setBalance(format);
 
 }
 
@@ -89,6 +91,7 @@ setBalance(format);
       } else {
         console.log("We have the ethereum object", ethereum);
         
+        
       }
 
       const accounts = await ethereum.request({ method: 'eth_accounts' });
@@ -99,6 +102,7 @@ setBalance(format);
         // console.log("Found an authorized account:", account);
         setCurrentAccount2(account);
         getBalance();
+        
       } else {
         console.log("No authorized account found")
       }
@@ -107,11 +111,17 @@ setBalance(format);
     }
   }
 
+  function reload() {
+    setTimeout(() => {
+      setRerender(!reRender);
+    }, 7000);
+  }
+  
 
   useEffect(() => {
     checkIfWalletIsConnected();
-
-  }, [balance, mimBalance, USDCBalance]);
+    reload();
+  }, [balance, mimBalance, USDCBalance, reRender]);
 
   
   
@@ -145,8 +155,18 @@ setBalance(format);
           <img src={FTM} alt="FTM" className="mr-1 w-10"/>
           </div>
           <h2 className="text-3xl text-white font-medium title-font mb-2">TOTAL FTM <span className='text-black'>{"....."}</span>
-          </h2>
+          </h2 >
           <p className="leading-relaxed text-white text-2xl">{Math.round(balance * 10000)/10000} FTM</p>
+        </div>
+      </div>
+      <div className="sm:w-full p-4">
+        <div className="border border-gray-200 p-6 rounded-lg bg-black">
+          <div className="w-10 h-10 inline-flex items-center justify-center rounded-full text-indigo-500 mb-4">
+          <img src={USDC} alt="FTM" className="mr-1 w-10"/>
+          </div>
+          <h2 className="text-3xl text-white font-medium title-font mb-2">REWARDS <span className='text-black'>{"....."}</span>
+          </h2 >
+          <p className="leading-relaxed text-white text-2xl">Coming Soon</p>
         </div>
       </div>
     </div>
